@@ -20,80 +20,69 @@ class MayaniProductInventory
     private $id;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="string", length=255)
      */
-    private $current_inventory_kg;
+    private $description;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $total_inventory_kg;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $total_farm_product_credit;
+    private $total_value;
 
     /**
-     * @ORM\ManyToMany(targetEntity=FarmProduct::class, inversedBy="mayaniProductInventories")
-     */
-    private $farm_product;
-
-    /**
-     * @ORM\OneToMany(targetEntity=B2CProductRequest::class, mappedBy="inventory", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=B2CProductRequest::class, mappedBy="mayani_inventory_id")
      */
     private $b2CProductRequests;
 
     public function __construct()
     {
-        $this->farm_product = new ArrayCollection();
         $this->b2CProductRequests = new ArrayCollection();
     }
+
+   
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCurrentInventoryKg(): ?float
+    public function getDescription(): ?string
     {
-        return $this->current_inventory_kg;
+        return $this->description;
     }
 
-    public function setCurrentInventoryKg(float $current_inventory_kg): self
+    public function setDescription(string $description): self
     {
-        $this->current_inventory_kg = $current_inventory_kg;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getTotalFarmProductCredit(): ?float
+    public function getTotalInventoryKg(): ?float
     {
-        return $this->total_farm_product_credit;
+        return $this->total_inventory_kg;
     }
 
-    public function setTotalFarmProductCredit(float $total_farm_product_credit): self
+    public function setTotalInventoryKg(float $total_inventory_kg): self
     {
-        $this->total_farm_product_credit = $total_farm_product_credit;
+        $this->total_inventory_kg = $total_inventory_kg;
 
         return $this;
     }
 
-    /**
-     * @return Collection|FarmProduct[]
-     */
-    public function getFarmProduct(): Collection
+    public function getTotalValue(): ?float
     {
-        return $this->farm_product;
+        return $this->total_value;
     }
 
-    public function addFarmProduct(FarmProduct $farmProduct): self
+    public function setTotalValue(float $total_value): self
     {
-        if (!$this->farm_product->contains($farmProduct)) {
-            $this->farm_product[] = $farmProduct;
-        }
-
-        return $this;
-    }
-
-    public function removeFarmProduct(FarmProduct $farmProduct): self
-    {
-        $this->farm_product->removeElement($farmProduct);
+        $this->total_value = $total_value;
 
         return $this;
     }
@@ -110,7 +99,7 @@ class MayaniProductInventory
     {
         if (!$this->b2CProductRequests->contains($b2CProductRequest)) {
             $this->b2CProductRequests[] = $b2CProductRequest;
-            $b2CProductRequest->setInventory($this);
+            $b2CProductRequest->setMayaniInventoryId($this);
         }
 
         return $this;
@@ -120,11 +109,13 @@ class MayaniProductInventory
     {
         if ($this->b2CProductRequests->removeElement($b2CProductRequest)) {
             // set the owning side to null (unless already changed)
-            if ($b2CProductRequest->getInventory() === $this) {
-                $b2CProductRequest->setInventory(null);
+            if ($b2CProductRequest->getMayaniInventoryId() === $this) {
+                $b2CProductRequest->setMayaniInventoryId(null);
             }
         }
 
         return $this;
     }
+
+
 }

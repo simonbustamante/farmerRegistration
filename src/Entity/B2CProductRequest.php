@@ -18,24 +18,52 @@ class B2CProductRequest
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity=MayaniProductInventory::class, inversedBy="b2CProductRequests")
+     */
+    private $mayani_inventory_id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="float")
      */
     private $quantity_kg;
 
     /**
-     * @ORM\ManyToOne(targetEntity=MayaniProductInventory::class, inversedBy="b2CProductRequests")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $inventory;
-
-    /**
      * @ORM\Column(type="float")
      */
-    private $total_debits;
+    private $total_debt;
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getMayaniInventoryId(): ?MayaniProductInventory
+    {
+        return $this->mayani_inventory_id;
+    }
+
+    public function setMayaniInventoryId(?MayaniProductInventory $mayani_inventory_id): self
+    {
+        $this->mayani_inventory_id = $mayani_inventory_id;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     public function getQuantityKg(): ?float
@@ -50,26 +78,14 @@ class B2CProductRequest
         return $this;
     }
 
-    public function getInventory(): ?MayaniProductInventory
+    public function getTotalDebt(): ?float
     {
-        return $this->inventory;
+        return $this->total_debt;
     }
 
-    public function setInventory(?MayaniProductInventory $inventory): self
+    public function setTotalDebt(float $total_debt): self
     {
-        $this->inventory = $inventory;
-
-        return $this;
-    }
-
-    public function getTotalDebits(): ?float
-    {
-        return $this->total_debits;
-    }
-
-    public function setTotalDebits(float $total_debits): self
-    {
-        $this->total_debits = $total_debits;
+        $this->total_debt = $total_debt;
 
         return $this;
     }

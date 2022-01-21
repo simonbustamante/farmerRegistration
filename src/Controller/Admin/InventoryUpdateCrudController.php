@@ -2,19 +2,20 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Product;
+use App\Entity\InventoryUpdate;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ProductCrudController extends AbstractCrudController
+class InventoryUpdateCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Product::class;
+        return InventoryUpdate::class;
     }
 
     
@@ -22,11 +23,10 @@ class ProductCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            TextField::new('name'),
-            MoneyField::new('price_per_kg')->setCurrency('PHP')->setCustomOption('storedAsCents', false),
-            NumberField::new('kg_per_month'),
-            AssociationField::new('activity_id'),
-            AssociationField::new('farm_id'),
+            AssociationField::new('inventory_id'),
+            NumberField::new('quantity_kg'),
+            MoneyField::new('credit')->setCurrency('PHP')->setCustomOption('storedAsCents', false),
+            DateTimeField::new('date'),
         ];
     }
     

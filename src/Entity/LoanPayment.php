@@ -18,47 +18,19 @@ class LoanPayment
     private $id;
 
     /**
-     * @ORM\Column(type="float")
-     */
-    private $quantity_paid;
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $date_of_payment;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=FarmerBalance::class)
+     * @ORM\ManyToOne(targetEntity=FarmerBalance::class, inversedBy="loanPayments")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $farmer_balance_id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=FarmerLoans::class, inversedBy="loanPayments")
+     */
+    private $loan_id;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getQuantityPaid(): ?float
-    {
-        return $this->quantity_paid;
-    }
-
-    public function setQuantityPaid(float $quantity_paid): self
-    {
-        $this->quantity_paid = $quantity_paid;
-
-        return $this;
-    }
-
-    public function getDateOfPayment(): ?\DateTimeInterface
-    {
-        return $this->date_of_payment;
-    }
-
-    public function setDateOfPayment(\DateTimeInterface $date_of_payment): self
-    {
-        $this->date_of_payment = $date_of_payment;
-
-        return $this;
     }
 
     public function getFarmerBalanceId(): ?FarmerBalance
@@ -69,6 +41,18 @@ class LoanPayment
     public function setFarmerBalanceId(?FarmerBalance $farmer_balance_id): self
     {
         $this->farmer_balance_id = $farmer_balance_id;
+
+        return $this;
+    }
+
+    public function getLoanId(): ?FarmerLoans
+    {
+        return $this->loan_id;
+    }
+
+    public function setLoanId(?FarmerLoans $loan_id): self
+    {
+        $this->loan_id = $loan_id;
 
         return $this;
     }

@@ -35,13 +35,13 @@ class MayaniLoanProducts
     private $loan_interest;
 
     /**
-     * @ORM\OneToMany(targetEntity=Loans::class, mappedBy="mayani_loan_product_id")
+     * @ORM\OneToMany(targetEntity=FarmerLoans::class, mappedBy="mayani_loan_product_id")
      */
-    private $loans;
+    private $farmerLoans;
 
     public function __construct()
     {
-        $this->loans = new ArrayCollection();
+        $this->farmerLoans = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -86,29 +86,29 @@ class MayaniLoanProducts
     }
 
     /**
-     * @return Collection|Loans[]
+     * @return Collection|FarmerLoans[]
      */
-    public function getLoans(): Collection
+    public function getFarmerLoans(): Collection
     {
-        return $this->loans;
+        return $this->farmerLoans;
     }
 
-    public function addLoan(Loans $loan): self
+    public function addFarmerLoan(FarmerLoans $farmerLoan): self
     {
-        if (!$this->loans->contains($loan)) {
-            $this->loans[] = $loan;
-            $loan->setMayaniLoanProductId($this);
+        if (!$this->farmerLoans->contains($farmerLoan)) {
+            $this->farmerLoans[] = $farmerLoan;
+            $farmerLoan->setMayaniLoanProductId($this);
         }
 
         return $this;
     }
 
-    public function removeLoan(Loans $loan): self
+    public function removeFarmerLoan(FarmerLoans $farmerLoan): self
     {
-        if ($this->loans->removeElement($loan)) {
+        if ($this->farmerLoans->removeElement($farmerLoan)) {
             // set the owning side to null (unless already changed)
-            if ($loan->getMayaniLoanProductId() === $this) {
-                $loan->setMayaniLoanProductId(null);
+            if ($farmerLoan->getMayaniLoanProductId() === $this) {
+                $farmerLoan->setMayaniLoanProductId(null);
             }
         }
 

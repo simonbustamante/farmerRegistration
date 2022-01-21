@@ -2,14 +2,14 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\FarmProduct;
+use App\Entity\Activity;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class FarmProductCrudController extends AbstractCrudController
+class ActivityCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return FarmProduct::class;
+        return Activity::class;
     }
 
     /*

@@ -3,13 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\FarmerRegister;
+use App\Entity\Group;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 
@@ -25,6 +27,7 @@ class FarmerRegisterCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
+            AssociationField::new('groups'),
             TextField::new('name'),
             TextField::new('middle_name'),
             TextField::new('surname'),
@@ -32,21 +35,21 @@ class FarmerRegisterCrudController extends AbstractCrudController
                 'Masculine'=>'Masculine',
                 'Femenine'=>'Femenine',
                 'Other'=>'Other'
-            ]),
-            TextField::new('home_address'),
-            TelephoneField::new('contact_number'),
-            DateField::new('date_of_birth'),
-            TextField::new('place_of_birth'),
+            ])->hideOnIndex(),
+            TextField::new('home_address')->hideOnIndex(),
+            TelephoneField::new('contact_number')->hideOnIndex(),
+            DateField::new('date_of_birth')->hideOnIndex(),
+            TextField::new('place_of_birth')->hideOnIndex(),
             CountryField::new('country_of_birth'),
-            TextField::new('religion'),
+            TextField::new('religion')->hideOnIndex(),
             ChoiceField::new('civil_status')->setChoices([
                 'Single'=>'Single',
                 'Married'=>'Married',
                 'Divorced'=>'Divorced',
                 'Widowed'=>'Widowed',
                 'Other'=>'Other'
-            ]),
-            TextField::new('spouse_name'),
+            ])->hideOnIndex(),
+            TextField::new('spouse_name')->hideOnIndex(),
             ChoiceField::new('highest_education')->setChoices([
                 'None'=>'None',
                 'Basic - Primary'=>'Basic - Primary',
@@ -55,14 +58,13 @@ class FarmerRegisterCrudController extends AbstractCrudController
                 'Master Degree' => 'Master Degree',
                 'Other High Degree' => 'Other High Degree',
                 'Other' => 'Other'
-            ]),
+            ])->hideOnIndex(),
             TextField::new('government_id'),
             TextField::new('mayani_id'),
-            ImageField::new('right_index')->setUploadDir('public/farmers_right_index'),
-            ImageField::new('left_index')->setUploadDir('public/farmers_left_index'),
-            ImageField::new('right_thumb')->setUploadDir('public/farmers_right_thumb'),
-            ImageField::new('left_thumb')->setUploadDir('public/farmers_left_thumb'),
-
+            ImageField::new('right_index')->setUploadDir('public/farmers_right_index')->hideOnIndex(),
+            ImageField::new('left_index')->setUploadDir('public/farmers_left_index')->hideOnIndex(),
+            ImageField::new('right_thumb')->setUploadDir('public/farmers_right_thumb')->hideOnIndex(),
+            ImageField::new('left_thumb')->setUploadDir('public/farmers_left_thumb')->hideOnIndex(),
         ];
     }
     

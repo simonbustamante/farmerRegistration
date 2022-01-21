@@ -45,10 +45,16 @@ class Group
      */
     private $farm;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=FarmerRegister::class, mappedBy="groups")
+     */
+    private $farmerRegisters;
+
     public function __construct()
     {
         $this->farmerRegister = new ArrayCollection();
         $this->farm = new ArrayCollection();
+        $this->farmerRegisters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -92,29 +98,7 @@ class Group
         return $this;
     }
 
-    /**
-     * @return Collection|FarmerRegister[]
-     */
-    public function getFarmerRegister(): Collection
-    {
-        return $this->farmerRegister;
-    }
-
-    public function addFarmerRegister(FarmerRegister $farmerRegister): self
-    {
-        if (!$this->farmerRegister->contains($farmerRegister)) {
-            $this->farmerRegister[] = $farmerRegister;
-        }
-
-        return $this;
-    }
-
-    public function removeFarmerRegister(FarmerRegister $farmerRegister): self
-    {
-        $this->farmerRegister->removeElement($farmerRegister);
-
-        return $this;
-    }
+   
 
     /**
      * @return Collection|Farm[]
@@ -136,6 +120,39 @@ class Group
     public function removeFarm(Farm $farm): self
     {
         $this->farm->removeElement($farm);
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        //dump($this->name);
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|FarmerRegister[]
+     */
+    public function getFarmerRegisters(): Collection
+    {
+        return $this->farmerRegisters;
+    }
+
+    public function addFarmerRegister(FarmerRegister $farmerRegister): self
+    {
+        if (!$this->farmerRegisters->contains($farmerRegister)) {
+            $this->farmerRegisters[] = $farmerRegister;
+            $farmerRegister->addGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFarmerRegister(FarmerRegister $farmerRegister): self
+    {
+        if ($this->farmerRegisters->removeElement($farmerRegister)) {
+            $farmerRegister->removeGroup($this);
+        }
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FarmerBalanceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,11 +25,6 @@ class FarmerBalance
      */
     private $farmer_id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Farm::class, inversedBy="farmerBalances")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $farm_id;
 
     /**
      * @ORM\Column(type="float", nullable=true)
@@ -44,6 +41,28 @@ class FarmerBalance
      */
     private $total_monthly_fee;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=MayaniRequestInventory::class, mappedBy="farmer_mayani")
+     */
+    private $mayaniRequestInventories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=LoanPayment::class, mappedBy="farmer_balance_id", orphanRemoval=true)
+     */
+    private $loanPayments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=FarmerLoans::class, inversedBy="farmerBalances")
+     */
+    private $farmer_loan_id;
+
+    public function __construct()
+    {
+        $this->mayaniRequestInventories = new ArrayCollection();
+        $this->loanPayments = new ArrayCollection();
+        $this->farmer_loan_id = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -57,18 +76,6 @@ class FarmerBalance
     public function setFarmerId(?FarmerRegister $farmer_id): self
     {
         $this->farmer_id = $farmer_id;
-
-        return $this;
-    }
-
-    public function getFarmId(): ?Farm
-    {
-        return $this->farm_id;
-    }
-
-    public function setFarmId(?Farm $farm_id): self
-    {
-        $this->farm_id = $farm_id;
 
         return $this;
     }
@@ -105,6 +112,87 @@ class FarmerBalance
     public function setTotalMonthlyFee(?float $total_monthly_fee): self
     {
         $this->total_monthly_fee = $total_monthly_fee;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MayaniRequestInventory[]
+     */
+    public function getMayaniRequestInventories(): Collection
+    {
+        return $this->mayaniRequestInventories;
+    }
+
+    public function addMayaniRequestInventory(MayaniRequestInventory $mayaniRequestInventory): self
+    {
+        if (!$this->mayaniRequestInventories->contains($mayaniRequestInventory)) {
+            $this->mayaniRequestInventories[] = $mayaniRequestInventory;
+            $mayaniRequestInventory->addFarmerMayani($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMayaniRequestInventory(MayaniRequestInventory $mayaniRequestInventory): self
+    {
+        if ($this->mayaniRequestInventories->removeElement($mayaniRequestInventory)) {
+            $mayaniRequestInventory->removeFarmerMayani($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|LoanPayment[]
+     */
+    public function getLoanPayments(): Collection
+    {
+        return $this->loanPayments;
+    }
+
+    public function addLoanPayment(LoanPayment $loanPayment): self
+    {
+        if (!$this->loanPayments->contains($loanPayment)) {
+            $this->loanPayments[] = $loanPayment;
+            $loanPayment->setFarmerBalanceId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoanPayment(LoanPayment $loanPayment): self
+    {
+        if ($this->loanPayments->removeElement($loanPayment)) {
+            // set the owning side to null (unless already changed)
+            if ($loanPayment->getFarmerBalanceId() === $this) {
+                $loanPayment->setFarmerBalanceId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FarmerLoans[]
+     */
+    public function getFarmerLoanId(): Collection
+    {
+        return $this->farmer_loan_id;
+    }
+
+    public function addFarmerLoanId(FarmerLoans $farmerLoanId): self
+    {
+        if (!$this->farmer_loan_id->contains($farmerLoanId)) {
+            $this->farmer_loan_id[] = $farmerLoanId;
+        }
+
+        return $this;
+    }
+
+    public function removeFarmerLoanId(FarmerLoans $farmerLoanId): self
+    {
+        $this->farmer_loan_id->removeElement($farmerLoanId);
 
         return $this;
     }

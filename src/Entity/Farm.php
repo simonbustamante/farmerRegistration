@@ -37,7 +37,7 @@ class Farm
     private $location_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Group::class, mappedBy="farm")
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="farmerRegisters")
      */
     private $groups;
 
@@ -46,12 +46,29 @@ class Farm
      */
     private $farmerBalances;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Activity::class, inversedBy="farms")
+     */
+    private $activity_id;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FarmInventory::class, mappedBy="farm_id")
+     */
+    private $farmInventories;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Product::class, mappedBy="farm_id")
+     */
+    private $products;
+
 
     public function __construct()
     {
         $this->groups = new ArrayCollection();
         $this->products = new ArrayCollection();
         $this->farmerBalances = new ArrayCollection();
+        $this->activity_id = new ArrayCollection();
+        $this->farmInventories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -152,5 +169,95 @@ class Farm
         return $this;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivityId(): Collection
+    {
+        return $this->activity_id;
+    }
+
+    public function addActivityId(Activity $activityId): self
+    {
+        if (!$this->activity_id->contains($activityId)) {
+            $this->activity_id[] = $activityId;
+        }
+
+        return $this;
+    }
+
+    public function removeActivityId(Activity $activityId): self
+    {
+        $this->activity_id->removeElement($activityId);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FarmInventory[]
+     */
+    public function getFarmInventories(): Collection
+    {
+        return $this->farmInventories;
+    }
+
+    public function addFarmInventory(FarmInventory $farmInventory): self
+    {
+        if (!$this->farmInventories->contains($farmInventory)) {
+            $this->farmInventories[] = $farmInventory;
+            $farmInventory->setFarmId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFarmInventory(FarmInventory $farmInventory): self
+    {
+        if ($this->farmInventories->removeElement($farmInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($farmInventory->getFarmId() === $this) {
+                $farmInventory->setFarmId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): self
+    {
+        if (!$this->products->contains($product)) {
+            $this->products[] = $product;
+            $product->setFarmId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): self
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getFarmId() === $this) {
+                $product->setFarmId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
     
 }

@@ -114,15 +114,17 @@ class FarmerRegister
      */
     private $left_thumb;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Group::class, mappedBy="farmerRegister")
-     */
-    private $groups;
+    
 
     /**
      * @ORM\OneToMany(targetEntity=FarmerBalance::class, mappedBy="farmer_id", orphanRemoval=true)
      */
     private $farmerBalances;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="farmerRegisters")
+     */
+    private $groups;
 
     public function __construct()
     {
@@ -363,32 +365,7 @@ class FarmerRegister
         return $this;
     }
 
-    /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-            $group->addFarmerRegister($this);
-        }
-
-        return $this;
-    }
-
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->removeElement($group)) {
-            $group->removeFarmerRegister($this);
-        }
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|FarmerBalance[]
@@ -418,5 +395,34 @@ class FarmerRegister
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        $this->groups->removeElement($group);
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name." ".$this->middle_name." ".$this->surname;
     }
 }

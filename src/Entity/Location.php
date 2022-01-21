@@ -123,4 +123,14 @@ class Location
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return  $this->house." ".
+                $this->street." ".
+                $this->barangay." ".
+                $this->municipality." ".
+                $this->province." ".
+                $this->region;
+    }
 }
