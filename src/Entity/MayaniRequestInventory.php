@@ -44,6 +44,11 @@ class MayaniRequestInventory
      */
     private $farmer_mayani;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=MayaniProductInventory::class, inversedBy="mayaniRequestInventories")
+     */
+    private $mayani_product_inventory_id;
+
     public function __construct()
     {
         $this->farmer_mayani = new ArrayCollection();
@@ -122,6 +127,18 @@ class MayaniRequestInventory
     public function removeFarmerMayani(FarmerBalance $farmerMayani): self
     {
         $this->farmer_mayani->removeElement($farmerMayani);
+
+        return $this;
+    }
+
+    public function getMayaniProductInventoryId(): ?MayaniProductInventory
+    {
+        return $this->mayani_product_inventory_id;
+    }
+
+    public function setMayaniProductInventoryId(?MayaniProductInventory $mayani_product_inventory_id): self
+    {
+        $this->mayani_product_inventory_id = $mayani_product_inventory_id;
 
         return $this;
     }

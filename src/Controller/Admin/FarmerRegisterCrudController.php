@@ -27,10 +27,11 @@ class FarmerRegisterCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            AssociationField::new('groups'),
             TextField::new('name'),
             TextField::new('middle_name'),
             TextField::new('surname'),
+            ImageField::new('picture'),
+            AssociationField::new('groups'),
             ChoiceField::new('sex')->setChoices([
                 'Masculine'=>'Masculine',
                 'Femenine'=>'Femenine',

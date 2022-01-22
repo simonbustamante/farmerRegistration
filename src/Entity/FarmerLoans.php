@@ -59,6 +59,11 @@ class FarmerLoans
      */
     private $farmerBalances;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $loan_description;
+
     public function __construct()
     {
         $this->loanPayments = new ArrayCollection();
@@ -197,5 +202,22 @@ class FarmerLoans
         }
 
         return $this;
+    }
+
+    public function getLoanDescription(): ?string
+    {
+        return $this->loan_description;
+    }
+
+    public function setLoanDescription(string $loan_description): self
+    {
+        $this->loan_description = $loan_description;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->loan_description;
     }
 }

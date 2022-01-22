@@ -28,6 +28,16 @@ class LoanPayment
      */
     private $loan_id;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $quantity_paid;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -53,6 +63,30 @@ class LoanPayment
     public function setLoanId(?FarmerLoans $loan_id): self
     {
         $this->loan_id = $loan_id;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getQuantityPaid(): ?float
+    {
+        return $this->quantity_paid;
+    }
+
+    public function setQuantityPaid(float $quantity_paid): self
+    {
+        $this->quantity_paid = $quantity_paid;
 
         return $this;
     }

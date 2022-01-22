@@ -39,9 +39,15 @@ class MayaniProductInventory
      */
     private $b2CProductRequests;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MayaniRequestInventory::class, mappedBy="mayani_product_inventory_id")
+     */
+    private $mayaniRequestInventories;
+
     public function __construct()
     {
         $this->b2CProductRequests = new ArrayCollection();
+        $this->mayaniRequestInventories = new ArrayCollection();
     }
 
    
@@ -117,5 +123,39 @@ class MayaniProductInventory
         return $this;
     }
 
+    /**
+     * @return Collection|MayaniRequestInventory[]
+     */
+    public function getMayaniRequestInventories(): Collection
+    {
+        return $this->mayaniRequestInventories;
+    }
+
+    public function addMayaniRequestInventory(MayaniRequestInventory $mayaniRequestInventory): self
+    {
+        if (!$this->mayaniRequestInventories->contains($mayaniRequestInventory)) {
+            $this->mayaniRequestInventories[] = $mayaniRequestInventory;
+            $mayaniRequestInventory->setMayaniProductInventoryId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMayaniRequestInventory(MayaniRequestInventory $mayaniRequestInventory): self
+    {
+        if ($this->mayaniRequestInventories->removeElement($mayaniRequestInventory)) {
+            // set the owning side to null (unless already changed)
+            if ($mayaniRequestInventory->getMayaniProductInventoryId() === $this) {
+                $mayaniRequestInventory->setMayaniProductInventoryId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->description;
+    }
 
 }

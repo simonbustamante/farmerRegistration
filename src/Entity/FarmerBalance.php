@@ -56,6 +56,11 @@ class FarmerBalance
      */
     private $farmer_loan_id;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    private $farmer_description;
+
     public function __construct()
     {
         $this->mayaniRequestInventories = new ArrayCollection();
@@ -196,4 +201,22 @@ class FarmerBalance
 
         return $this;
     }
+
+    public function getFarmerDescription(): ?string
+    {
+        return $this->farmer_description;
+    }
+
+    public function setFarmerDescription(?string $farmer_description): self
+    {
+        $this->farmer_description = $farmer_description;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->farmer_description;
+    }
+    
 }

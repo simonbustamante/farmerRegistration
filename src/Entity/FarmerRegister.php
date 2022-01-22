@@ -126,6 +126,11 @@ class FarmerRegister
      */
     private $groups;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $picture;
+
     public function __construct()
     {
         $this->groups = new ArrayCollection();
@@ -424,5 +429,17 @@ class FarmerRegister
     public function __toString()
     {
         return $this->name." ".$this->middle_name." ".$this->surname;
+    }
+
+    public function getPicture(): ?string
+    {
+        return $this->picture;
+    }
+
+    public function setPicture(?string $picture): self
+    {
+        $this->picture = $picture;
+
+        return $this;
     }
 }
