@@ -24,6 +24,7 @@ class FarmInventoryCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(),
             AssociationField::new('product_id'),
+            TextField::new('farm_description')->hideOnIndex(),
             AssociationField::new('farm_id'),
             DateField::new('date'),
             MoneyField::new('total_price')->setCurrency('PHP')->setCustomOption('storedAsCents', false),

@@ -50,8 +50,14 @@ class FarmInventory
      */
     private $inventoryUpdates;
 
+
     /**
-     * @ORM\OneToMany(targetEntity=MayaniRequestInventory::class, mappedBy="inventory_id")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $farm_description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=MayaniRequestInventory::class, mappedBy="farm_inventory_id")
      */
     private $mayaniRequestInventories;
 
@@ -129,7 +135,7 @@ class FarmInventory
 
     public function __toString()
     {
-        return $this->farm_id." Inventory";
+        return $this->farm_description;
     }
 
     /**
@@ -162,6 +168,18 @@ class FarmInventory
         return $this;
     }
 
+    public function getFarmDescription(): ?string
+    {
+        return $this->farm_description;
+    }
+
+    public function setFarmDescription(string $farm_description): self
+    {
+        $this->farm_description = $farm_description;
+
+        return $this;
+    }
+
     /**
      * @return Collection|MayaniRequestInventory[]
      */
@@ -174,7 +192,7 @@ class FarmInventory
     {
         if (!$this->mayaniRequestInventories->contains($mayaniRequestInventory)) {
             $this->mayaniRequestInventories[] = $mayaniRequestInventory;
-            $mayaniRequestInventory->setInventoryId($this);
+            $mayaniRequestInventory->addFarmInventoryId($this);
         }
 
         return $this;
@@ -183,10 +201,7 @@ class FarmInventory
     public function removeMayaniRequestInventory(MayaniRequestInventory $mayaniRequestInventory): self
     {
         if ($this->mayaniRequestInventories->removeElement($mayaniRequestInventory)) {
-            // set the owning side to null (unless already changed)
-            if ($mayaniRequestInventory->getInventoryId() === $this) {
-                $mayaniRequestInventory->setInventoryId(null);
-            }
+            $mayaniRequestInventory->removeFarmInventoryId($this);
         }
 
         return $this;

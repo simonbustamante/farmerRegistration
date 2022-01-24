@@ -30,7 +30,7 @@ class FarmerRegisterCrudController extends AbstractCrudController
             TextField::new('name'),
             TextField::new('middle_name'),
             TextField::new('surname'),
-            ImageField::new('picture'),
+            ImageField::new('picture')->setUploadDir('public/farmers_pictures')->hideOnIndex(),
             AssociationField::new('groups'),
             ChoiceField::new('sex')->setChoices([
                 'Masculine'=>'Masculine',

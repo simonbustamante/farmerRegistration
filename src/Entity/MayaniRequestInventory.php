@@ -20,11 +20,6 @@ class MayaniRequestInventory
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=FarmInventory::class, inversedBy="mayaniRequestInventories")
-     */
-    private $inventory_id;
-
-    /**
      * @ORM\Column(type="float")
      */
     private $quantity_kg;
@@ -49,26 +44,20 @@ class MayaniRequestInventory
      */
     private $mayani_product_inventory_id;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=FarmInventory::class, inversedBy="mayaniRequestInventories")
+     */
+    private $farm_inventory_id;
+
     public function __construct()
     {
         $this->farmer_mayani = new ArrayCollection();
+        $this->farm_inventory_id = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getInventoryId(): ?FarmInventory
-    {
-        return $this->inventory_id;
-    }
-
-    public function setInventoryId(?FarmInventory $inventory_id): self
-    {
-        $this->inventory_id = $inventory_id;
-
-        return $this;
     }
 
     public function getQuantityKg(): ?float
@@ -139,6 +128,30 @@ class MayaniRequestInventory
     public function setMayaniProductInventoryId(?MayaniProductInventory $mayani_product_inventory_id): self
     {
         $this->mayani_product_inventory_id = $mayani_product_inventory_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FarmInventory[]
+     */
+    public function getFarmInventoryId(): Collection
+    {
+        return $this->farm_inventory_id;
+    }
+
+    public function addFarmInventoryId(FarmInventory $farmInventoryId): self
+    {
+        if (!$this->farm_inventory_id->contains($farmInventoryId)) {
+            $this->farm_inventory_id[] = $farmInventoryId;
+        }
+
+        return $this;
+    }
+
+    public function removeFarmInventoryId(FarmInventory $farmInventoryId): self
+    {
+        $this->farm_inventory_id->removeElement($farmInventoryId);
 
         return $this;
     }

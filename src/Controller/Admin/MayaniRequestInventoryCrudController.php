@@ -22,7 +22,7 @@ class MayaniRequestInventoryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            AssociationField::new('inventory_id'),
+            AssociationField::new('farm_inventory_id'),
             AssociationField::new('mayani_product_inventory_id'),
             NumberField::new('quantity_kg'),
             MoneyField::new('debt')->setCurrency('PHP')->setCustomOption('storedAsCents', false),
