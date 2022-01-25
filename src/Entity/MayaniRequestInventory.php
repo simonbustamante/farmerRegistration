@@ -40,19 +40,25 @@ class MayaniRequestInventory
     private $farmer_mayani;
 
     /**
-     * @ORM\ManyToOne(targetEntity=MayaniProductInventory::class, inversedBy="mayaniRequestInventories")
-     */
-    private $mayani_product_inventory_id;
-
-    /**
      * @ORM\ManyToMany(targetEntity=FarmInventory::class, inversedBy="mayaniRequestInventories")
      */
     private $farm_inventory_id;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Description;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=MayaniProductInventory::class, inversedBy="mayaniRequestInventories")
+     */
+    private $mayani_product_inventory_id;
 
     public function __construct()
     {
         $this->farmer_mayani = new ArrayCollection();
         $this->farm_inventory_id = new ArrayCollection();
+        $this->mayani_product_inventory_id = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,18 +126,6 @@ class MayaniRequestInventory
         return $this;
     }
 
-    public function getMayaniProductInventoryId(): ?MayaniProductInventory
-    {
-        return $this->mayani_product_inventory_id;
-    }
-
-    public function setMayaniProductInventoryId(?MayaniProductInventory $mayani_product_inventory_id): self
-    {
-        $this->mayani_product_inventory_id = $mayani_product_inventory_id;
-
-        return $this;
-    }
-
     /**
      * @return Collection|FarmInventory[]
      */
@@ -152,6 +146,42 @@ class MayaniRequestInventory
     public function removeFarmInventoryId(FarmInventory $farmInventoryId): self
     {
         $this->farm_inventory_id->removeElement($farmInventoryId);
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(string $Description): self
+    {
+        $this->Description = $Description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MayaniProductInventory[]
+     */
+    public function getMayaniProductInventoryId(): Collection
+    {
+        return $this->mayani_product_inventory_id;
+    }
+
+    public function addMayaniProductInventoryId(MayaniProductInventory $mayaniProductInventoryId): self
+    {
+        if (!$this->mayani_product_inventory_id->contains($mayaniProductInventoryId)) {
+            $this->mayani_product_inventory_id[] = $mayaniProductInventoryId;
+        }
+
+        return $this;
+    }
+
+    public function removeMayaniProductInventoryId(MayaniProductInventory $mayaniProductInventoryId): self
+    {
+        $this->mayani_product_inventory_id->removeElement($mayaniProductInventoryId);
 
         return $this;
     }

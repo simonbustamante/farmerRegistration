@@ -9,6 +9,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class MayaniRequestInventoryCrudController extends AbstractCrudController
 {
@@ -22,11 +23,12 @@ class MayaniRequestInventoryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')->hideOnForm(),
-            AssociationField::new('farm_inventory_id'),
+            TextField::new('description'),
             AssociationField::new('mayani_product_inventory_id'),
             NumberField::new('quantity_kg'),
             MoneyField::new('debt')->setCurrency('PHP')->setCustomOption('storedAsCents', false),
             DateField::new('date'),
+            AssociationField::new('farm_inventory_id'),
         ];
     }
     
