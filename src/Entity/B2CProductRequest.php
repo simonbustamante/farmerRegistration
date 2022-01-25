@@ -37,6 +37,11 @@ class B2CProductRequest
      */
     private $total_debt;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class B2CProductRequest
     public function setTotalDebt(float $total_debt): self
     {
         $this->total_debt = $total_debt;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

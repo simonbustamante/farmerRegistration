@@ -59,8 +59,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Mayani Product Inventory', 'fas fa-list', MayaniProductInventory::class);
         yield MenuItem::linkToCrud('B2C Product Request', 'fas fa-list', B2CProductRequest::class);
         yield MenuItem::linkToCrud('Farmers Balance', 'fas fa-list', FarmerBalance::class);
-        yield MenuItem::linkToCrud('Farmer Loans', 'fas fa-list', FarmerLoans::class);
         yield MenuItem::linkToCrud('Mayani\'s Loan Products ', 'fas fa-list', MayaniLoanProducts::class);
+        yield MenuItem::linkToCrud('Farmer Loans', 'fas fa-list', FarmerLoans::class);
         yield MenuItem::linkToCrud('Loan Payment', 'fas fa-list', LoanPayment::class);
     }
 }
