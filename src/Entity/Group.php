@@ -36,11 +36,6 @@ class Group
     private $year_of_foundation;
 
     /**
-     * @ORM\ManyToMany(targetEntity=FarmerRegister::class, inversedBy="groups")
-     */
-    private $farmerRegister;
-
-    /**
      * @ORM\ManyToMany(targetEntity=Farm::class, inversedBy="groups")
      */
     private $farm;
