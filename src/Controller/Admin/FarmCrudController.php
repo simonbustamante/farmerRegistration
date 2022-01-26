@@ -23,7 +23,7 @@ class FarmCrudController extends AbstractCrudController
             TextField::new('name'),
             AssociationField::new('location_id'),
             AssociationField::new('farmer_id'),
-            AssociationField::new('groups')->onlyOnForms(),
+            AssociationField::new('groups'),
             AssociationField::new('activity_id')->onlyOnForms(),
         ];
     }
