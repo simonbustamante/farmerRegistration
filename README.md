@@ -78,3 +78,5 @@ En este punto, se debe esperar aproximadamente 30 minutos dependiendo de la máq
        > loading App\DataFixtures\FarmerLoanFixtures
        > loading App\DataFixtures\LoanPaymentFixtures
        > loading App\DataFixtures\MayaniProductInventoryFixtures
+       > loading App\DataFixtures\B2CProductrequestFixtures
+
