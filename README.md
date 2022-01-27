@@ -62,19 +62,19 @@ En este punto, se debe esperar aproximadamente 30 minutos dependiendo de la máq
 
 ### Logs mostrados durante la carga masiva
 
- > purging database
-   > loading App\DataFixtures\LocationFixtures
-   > loading App\DataFixtures\GroupFixtures
-   > loading App\DataFixtures\AppFixtures
-   > loading App\DataFixtures\FarmerRegisterFixtures
-   > loading App\DataFixtures\MayaniLoanProductFixtures
-   > loading App\DataFixtures\FarmFixtures
-   > loading App\DataFixtures\ActivityFixtures
-   > loading App\DataFixtures\ProductFixtures
-   > loading App\DataFixtures\FarmInventoryFixtures
-   > loading App\DataFixtures\InventoryUpdateFixtures
-   > loading App\DataFixtures\MayaniRequestInventoryFixtures
-   > loading App\DataFixtures\FarmerBalanceFixtures
-   > loading App\DataFixtures\FarmerLoanFixtures
-   > loading App\DataFixtures\LoanPaymentFixtures
-   > loading App\DataFixtures\MayaniProductInventoryFixtures
+     > purging database
+       > loading App\DataFixtures\LocationFixtures
+       > loading App\DataFixtures\GroupFixtures
+       > loading App\DataFixtures\AppFixtures
+       > loading App\DataFixtures\FarmerRegisterFixtures
+       > loading App\DataFixtures\MayaniLoanProductFixtures
+       > loading App\DataFixtures\FarmFixtures
+       > loading App\DataFixtures\ActivityFixtures
+       > loading App\DataFixtures\ProductFixtures
+       > loading App\DataFixtures\FarmInventoryFixtures
+       > loading App\DataFixtures\InventoryUpdateFixtures
+       > loading App\DataFixtures\MayaniRequestInventoryFixtures
+       > loading App\DataFixtures\FarmerBalanceFixtures
+       > loading App\DataFixtures\FarmerLoanFixtures
+       > loading App\DataFixtures\LoanPaymentFixtures
+       > loading App\DataFixtures\MayaniProductInventoryFixtures
