@@ -1,6 +1,6 @@
 # Instalación de herramienta y generación datos B2B
 
-La herramienta y scripts descritos a continuación son un desarrollo propio basado en el modelo entidad – relación del punto 3.1 para poder simular la base de datos B2B, ya que la original no puede ser mostrada ni a la Organización ni a otra entidad distinta a Mayani debido a la confidencialidad de esta. En todo caso, el modelo de datos representa lo más aproximado al sistema B2B que tiene Mayani.
+La herramienta y scripts descritos a continuación son un desarrollo propio basado en el modelo entidad – relación del punto 3.1 para poder simular la base de datos B2B, ya que la original no puede ser mostrada ni a la ORGANIZACION ni a otra entidad distinta al CLIENTE debido a la confidencialidad de esta. En todo caso, el modelo de datos representa lo más aproximado al sistema B2B que tiene el CLIENTE en producción.
 
 ## Requisitos
 
