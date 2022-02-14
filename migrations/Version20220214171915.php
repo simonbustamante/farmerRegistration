@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220124160933 extends AbstractMigration
+final class Version20220214171915 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -39,7 +39,7 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('CREATE TABLE activity (id INT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE admin (id INT NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, surname VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_880E0D76E7927C74 ON admin (email)');
-        $this->addSql('CREATE TABLE b2_cproduct_request (id INT NOT NULL, mayani_inventory_id_id INT DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, quantity_kg DOUBLE PRECISION NOT NULL, total_debt DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE TABLE b2_cproduct_request (id INT NOT NULL, mayani_inventory_id_id INT DEFAULT NULL, description VARCHAR(255) DEFAULT NULL, quantity_kg DOUBLE PRECISION NOT NULL, total_debt DOUBLE PRECISION NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_1280BBE8B1DC06DF ON b2_cproduct_request (mayani_inventory_id_id)');
         $this->addSql('CREATE TABLE farm (id INT NOT NULL, farmer_id_id INT NOT NULL, location_id_id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_5816D045D532C99C ON farm (farmer_id_id)');
@@ -65,9 +65,6 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_E98C30EE22D11124 ON farmer_register_group (farmer_register_id)');
         $this->addSql('CREATE INDEX IDX_E98C30EEFE54D947 ON farmer_register_group (group_id)');
         $this->addSql('CREATE TABLE "group" (id INT NOT NULL, name VARCHAR(255) NOT NULL, id_number VARCHAR(255) NOT NULL, year_of_foundation TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE group_farmer_register (group_id INT NOT NULL, farmer_register_id INT NOT NULL, PRIMARY KEY(group_id, farmer_register_id))');
-        $this->addSql('CREATE INDEX IDX_300CBB5CFE54D947 ON group_farmer_register (group_id)');
-        $this->addSql('CREATE INDEX IDX_300CBB5C22D11124 ON group_farmer_register (farmer_register_id)');
         $this->addSql('CREATE TABLE group_farm (group_id INT NOT NULL, farm_id INT NOT NULL, PRIMARY KEY(group_id, farm_id))');
         $this->addSql('CREATE INDEX IDX_714C8B35FE54D947 ON group_farm (group_id)');
         $this->addSql('CREATE INDEX IDX_714C8B3565FCFA0D ON group_farm (farm_id)');
@@ -79,12 +76,16 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('CREATE TABLE location (id INT NOT NULL, house VARCHAR(255) NOT NULL, street VARCHAR(255) NOT NULL, barangay VARCHAR(255) NOT NULL, municipality VARCHAR(255) NOT NULL, province VARCHAR(255) NOT NULL, region VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE mayani_loan_products (id INT NOT NULL, name VARCHAR(255) NOT NULL, description VARCHAR(255) NOT NULL, loan_interest DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE mayani_product_inventory (id INT NOT NULL, description VARCHAR(255) NOT NULL, total_inventory_kg DOUBLE PRECISION DEFAULT NULL, total_value DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE TABLE mayani_request_inventory (id INT NOT NULL, inventory_id_id INT DEFAULT NULL, mayani_product_inventory_id_id INT DEFAULT NULL, quantity_kg DOUBLE PRECISION NOT NULL, debt DOUBLE PRECISION NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE INDEX IDX_B656DAC0A3D83557 ON mayani_request_inventory (inventory_id_id)');
-        $this->addSql('CREATE INDEX IDX_B656DAC09B7979E ON mayani_request_inventory (mayani_product_inventory_id_id)');
+        $this->addSql('CREATE TABLE mayani_request_inventory (id INT NOT NULL, quantity_kg DOUBLE PRECISION NOT NULL, debt DOUBLE PRECISION NOT NULL, date TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, description VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE TABLE mayani_request_inventory_farmer_balance (mayani_request_inventory_id INT NOT NULL, farmer_balance_id INT NOT NULL, PRIMARY KEY(mayani_request_inventory_id, farmer_balance_id))');
         $this->addSql('CREATE INDEX IDX_6D03435FE318A92 ON mayani_request_inventory_farmer_balance (mayani_request_inventory_id)');
         $this->addSql('CREATE INDEX IDX_6D03435F621A0D8D ON mayani_request_inventory_farmer_balance (farmer_balance_id)');
+        $this->addSql('CREATE TABLE mayani_request_inventory_farm_inventory (mayani_request_inventory_id INT NOT NULL, farm_inventory_id INT NOT NULL, PRIMARY KEY(mayani_request_inventory_id, farm_inventory_id))');
+        $this->addSql('CREATE INDEX IDX_263DC58FE318A92 ON mayani_request_inventory_farm_inventory (mayani_request_inventory_id)');
+        $this->addSql('CREATE INDEX IDX_263DC58F432B1A90 ON mayani_request_inventory_farm_inventory (farm_inventory_id)');
+        $this->addSql('CREATE TABLE mayani_request_inventory_mayani_product_inventory (mayani_request_inventory_id INT NOT NULL, mayani_product_inventory_id INT NOT NULL, PRIMARY KEY(mayani_request_inventory_id, mayani_product_inventory_id))');
+        $this->addSql('CREATE INDEX IDX_24518E1FE318A92 ON mayani_request_inventory_mayani_product_inventory (mayani_request_inventory_id)');
+        $this->addSql('CREATE INDEX IDX_24518E1F98BFF121 ON mayani_request_inventory_mayani_product_inventory (mayani_product_inventory_id)');
         $this->addSql('CREATE TABLE product (id INT NOT NULL, activity_id_id INT DEFAULT NULL, farm_id_id INT DEFAULT NULL, name VARCHAR(255) NOT NULL, price_per_kg DOUBLE PRECISION NOT NULL, kg_per_month DOUBLE PRECISION NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE INDEX IDX_D34A04AD6146A8E4 ON product (activity_id_id)');
         $this->addSql('CREATE INDEX IDX_D34A04AD34C1E106 ON product (farm_id_id)');
@@ -103,17 +104,17 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('ALTER TABLE farmer_loans ADD CONSTRAINT FK_28B41A77ADF96CAD FOREIGN KEY (mayani_loan_product_id_id) REFERENCES mayani_loan_products (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE farmer_register_group ADD CONSTRAINT FK_E98C30EE22D11124 FOREIGN KEY (farmer_register_id) REFERENCES farmer_register (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE farmer_register_group ADD CONSTRAINT FK_E98C30EEFE54D947 FOREIGN KEY (group_id) REFERENCES "group" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE group_farmer_register ADD CONSTRAINT FK_300CBB5CFE54D947 FOREIGN KEY (group_id) REFERENCES "group" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE group_farmer_register ADD CONSTRAINT FK_300CBB5C22D11124 FOREIGN KEY (farmer_register_id) REFERENCES farmer_register (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE group_farm ADD CONSTRAINT FK_714C8B35FE54D947 FOREIGN KEY (group_id) REFERENCES "group" (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE group_farm ADD CONSTRAINT FK_714C8B3565FCFA0D FOREIGN KEY (farm_id) REFERENCES farm (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE inventory_update ADD CONSTRAINT FK_98F9A9D3A3D83557 FOREIGN KEY (inventory_id_id) REFERENCES farm_inventory (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE loan_payment ADD CONSTRAINT FK_43670A79C760CAB6 FOREIGN KEY (farmer_balance_id_id) REFERENCES farmer_balance (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE loan_payment ADD CONSTRAINT FK_43670A7928FD8608 FOREIGN KEY (loan_id_id) REFERENCES farmer_loans (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE mayani_request_inventory ADD CONSTRAINT FK_B656DAC0A3D83557 FOREIGN KEY (inventory_id_id) REFERENCES farm_inventory (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE mayani_request_inventory ADD CONSTRAINT FK_B656DAC09B7979E FOREIGN KEY (mayani_product_inventory_id_id) REFERENCES mayani_product_inventory (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE mayani_request_inventory_farmer_balance ADD CONSTRAINT FK_6D03435FE318A92 FOREIGN KEY (mayani_request_inventory_id) REFERENCES mayani_request_inventory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE mayani_request_inventory_farmer_balance ADD CONSTRAINT FK_6D03435F621A0D8D FOREIGN KEY (farmer_balance_id) REFERENCES farmer_balance (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE mayani_request_inventory_farm_inventory ADD CONSTRAINT FK_263DC58FE318A92 FOREIGN KEY (mayani_request_inventory_id) REFERENCES mayani_request_inventory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE mayani_request_inventory_farm_inventory ADD CONSTRAINT FK_263DC58F432B1A90 FOREIGN KEY (farm_inventory_id) REFERENCES farm_inventory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE mayani_request_inventory_mayani_product_inventory ADD CONSTRAINT FK_24518E1FE318A92 FOREIGN KEY (mayani_request_inventory_id) REFERENCES mayani_request_inventory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE mayani_request_inventory_mayani_product_inventory ADD CONSTRAINT FK_24518E1F98BFF121 FOREIGN KEY (mayani_product_inventory_id) REFERENCES mayani_product_inventory (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD6146A8E4 FOREIGN KEY (activity_id_id) REFERENCES activity (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE product ADD CONSTRAINT FK_D34A04AD34C1E106 FOREIGN KEY (farm_id_id) REFERENCES farm (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
@@ -130,7 +131,7 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('ALTER TABLE group_farm DROP CONSTRAINT FK_714C8B3565FCFA0D');
         $this->addSql('ALTER TABLE product DROP CONSTRAINT FK_D34A04AD34C1E106');
         $this->addSql('ALTER TABLE inventory_update DROP CONSTRAINT FK_98F9A9D3A3D83557');
-        $this->addSql('ALTER TABLE mayani_request_inventory DROP CONSTRAINT FK_B656DAC0A3D83557');
+        $this->addSql('ALTER TABLE mayani_request_inventory_farm_inventory DROP CONSTRAINT FK_263DC58F432B1A90');
         $this->addSql('ALTER TABLE farmer_balance_farmer_loans DROP CONSTRAINT FK_F6FB1284621A0D8D');
         $this->addSql('ALTER TABLE loan_payment DROP CONSTRAINT FK_43670A79C760CAB6');
         $this->addSql('ALTER TABLE mayani_request_inventory_farmer_balance DROP CONSTRAINT FK_6D03435F621A0D8D');
@@ -139,16 +140,16 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('ALTER TABLE farm DROP CONSTRAINT FK_5816D045D532C99C');
         $this->addSql('ALTER TABLE farmer_balance DROP CONSTRAINT FK_71F57F5AD532C99C');
         $this->addSql('ALTER TABLE farmer_register_group DROP CONSTRAINT FK_E98C30EE22D11124');
-        $this->addSql('ALTER TABLE group_farmer_register DROP CONSTRAINT FK_300CBB5C22D11124');
         $this->addSql('ALTER TABLE farm_group DROP CONSTRAINT FK_26453B94FE54D947');
         $this->addSql('ALTER TABLE farmer_register_group DROP CONSTRAINT FK_E98C30EEFE54D947');
-        $this->addSql('ALTER TABLE group_farmer_register DROP CONSTRAINT FK_300CBB5CFE54D947');
         $this->addSql('ALTER TABLE group_farm DROP CONSTRAINT FK_714C8B35FE54D947');
         $this->addSql('ALTER TABLE farm DROP CONSTRAINT FK_5816D045918DB72');
         $this->addSql('ALTER TABLE farmer_loans DROP CONSTRAINT FK_28B41A77ADF96CAD');
         $this->addSql('ALTER TABLE b2_cproduct_request DROP CONSTRAINT FK_1280BBE8B1DC06DF');
-        $this->addSql('ALTER TABLE mayani_request_inventory DROP CONSTRAINT FK_B656DAC09B7979E');
+        $this->addSql('ALTER TABLE mayani_request_inventory_mayani_product_inventory DROP CONSTRAINT FK_24518E1F98BFF121');
         $this->addSql('ALTER TABLE mayani_request_inventory_farmer_balance DROP CONSTRAINT FK_6D03435FE318A92');
+        $this->addSql('ALTER TABLE mayani_request_inventory_farm_inventory DROP CONSTRAINT FK_263DC58FE318A92');
+        $this->addSql('ALTER TABLE mayani_request_inventory_mayani_product_inventory DROP CONSTRAINT FK_24518E1FE318A92');
         $this->addSql('ALTER TABLE farm_inventory DROP CONSTRAINT FK_3ACBF98ADE18E50B');
         $this->addSql('DROP SEQUENCE activity_id_seq CASCADE');
         $this->addSql('DROP SEQUENCE admin_id_seq CASCADE');
@@ -179,7 +180,6 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('DROP TABLE farmer_register');
         $this->addSql('DROP TABLE farmer_register_group');
         $this->addSql('DROP TABLE "group"');
-        $this->addSql('DROP TABLE group_farmer_register');
         $this->addSql('DROP TABLE group_farm');
         $this->addSql('DROP TABLE inventory_update');
         $this->addSql('DROP TABLE loan_payment');
@@ -188,6 +188,8 @@ final class Version20220124160933 extends AbstractMigration
         $this->addSql('DROP TABLE mayani_product_inventory');
         $this->addSql('DROP TABLE mayani_request_inventory');
         $this->addSql('DROP TABLE mayani_request_inventory_farmer_balance');
+        $this->addSql('DROP TABLE mayani_request_inventory_farm_inventory');
+        $this->addSql('DROP TABLE mayani_request_inventory_mayani_product_inventory');
         $this->addSql('DROP TABLE product');
     }
 }
