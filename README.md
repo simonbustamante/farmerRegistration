@@ -60,6 +60,10 @@ La herramienta y scripts descritos a continuación son un desarrollo propio basa
         
 En este punto, se debe esperar aproximadamente 30 minutos dependiendo de la máquina computadora, ya que  la data se encontrará cargando en las tablas de la base de datos y se mostrará en líne de comandos la entidades que se encuentran cargadas.  Finalmente de querer manipular algun dato de forma manual, puede acceder a la siguiente direccion en el navegador web https://127.0.0.1:8000/admin. 
 
+### Detener herramienta
+
+        docker-compose down
+
 ### Logs mostrados durante la carga masiva
 
      > purging database
