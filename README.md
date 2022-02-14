@@ -49,10 +49,13 @@ La herramienta y scripts descritos a continuación son un desarrollo propio basa
 
         git clone https://github.com/simonbustamante/farmerRegistration.git
 
-### Iniciar herramienta y desplegar data
+### Instalar herramienta
 
         cd farmerRegistration
         composer install
+        
+### Iniciar Herramienta
+
         docker-compose up -d
         symfony server:start -d
         symfony console doctrine:migrations:migrate -n
